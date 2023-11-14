@@ -1,11 +1,16 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS} from '../theme/theme';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: any) => {
   return (
     <View style={styles.container}>
-      <Text>componentName</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('MovieDetails');
+        }}>
+        <Text style={{color: 'white'}}>HomeScreen</Text>
+      </TouchableOpacity>
     </View>
   );
 };
