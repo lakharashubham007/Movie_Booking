@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -19,12 +19,59 @@ import InputHeader from '../components/InputHeader';
 
 const {width, height} = Dimensions.get('window');
 
+const getNowPlayingMoviesList = async () => {
+  try {
+    let response = await fetch(nowPlayingMovies);
+    let json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(
+      ' Something went wrong in getNowPlayingMoviesList Function',
+      error,
+    );
+  }
+};
+const getUpcomingMoviesList = async () => {
+  try {
+    let response = await fetch(upcomingMovies);
+    let json = await response.json();
+    return json;
+  } catch (error) {
+    console.log(
+      'Something went wrong in getUpcomingMoviesList Function',
+      error,
+    );
+  }
+};
+const getPopularMoviesList = async () => {
+  try {
+    let response = await fetch(popularMovies);
+    let json = await response.json();
+    return json;
+  } catch (error) {
+    console.log('Something went wrong in getPopularMoviesList Function', error);
+  }
+};
+
 const HomeScreen = ({navigation}: any) => {
   const [nowPlayingMoviesList, setNowPlayingMoviesList] =
     useState<any>(undefined);
   const [popularMoviesList, setPopularMoviesList] = useState<any>(undefined);
   const [upcomingMoviesList, setUpcomingMoviesList] = useState<any>(undefined);
+  //Fetch data from API
+  useEffect(() => {
+    (async () => {
+      let tempNowPlaying = await getNowPlayingMoviesList();
+      setNowPlayingMoviesList({...tempNowPlaying});
 
+      let tempUpcoming = await getUpcomingMoviesList();
+      setUpcomingMoviesList({...tempUpcoming});
+
+      let tempPopular = await getPopularMoviesList();
+      setPopularMoviesList({...tempPopular});
+    })();
+  }, []);
+  console.log(nowPlayingMoviesList);
   const searchMoviesFunction = () => {
     navigation.navigate('Search');
   };
